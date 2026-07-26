@@ -1,0 +1,41 @@
+Good morning everyone.
+
+Today I am presenting a university campus network designed and tested in Cisco Packet Tracer.
+
+The main goal of this project was to build a network that separates different university users and services while still allowing controlled communication between them. The final topology contains 26 devices and 29 physical links.
+
+The network uses five main VLANs. VLAN 10 is used for management and access points. VLAN 20 is for administrative staff. VLAN 30 is for engineering students. VLAN 40 is for dormitory wireless users. VLAN 50 contains the university servers.
+
+Each VLAN has its own IP subnet. This separation reduces broadcast traffic, improves organization, and creates a better foundation for security policies. The dormitory network uses a /23 subnet because it is expected to support more users than the other departments.
+
+At the core of the network, there are two multilayer switches. They provide inter-VLAN routing and use HSRP virtual gateway addresses. The virtual gateway for every campus VLAN ends in dot one. For example, the Administration gateway is 10.1.20.1 and the Engineering gateway is 10.1.30.1.
+
+Using a virtual gateway means users do not need to know which core switch is currently forwarding their traffic. This makes the design more resilient and easier to manage.
+
+OSPF is used between the core and edge portions of the network. The edge router connects the university to a simulated ISP. NAT is configured on the edge router so private campus addresses can communicate with the external test network.
+
+The university services are placed in VLAN 50. The DHCP server has four enabled address pools for management, administration, engineering, and dormitory wireless users. The DNS server resolves www.university.local to the internal web server at 10.1.50.20. The internal and external HTTP services are also enabled.
+
+For wireless access, two autonomous access points connect to VLAN 40. Each wireless client is successfully associated with an access point and has a valid address in the dormitory subnet.
+
+When the file is first opened, I allow a few seconds for the wireless scan to complete. If Packet Tracer initially displays an automatic private address, I renew DHCP once from the laptop's IP Configuration window.
+
+During troubleshooting, several important faults were found. The original inter-core EtherChannel was asymmetric and created a Layer 2 loop. It was replaced with one stable inter-core trunk. The original wireless controller and lightweight access-point design did not operate correctly with the available Packet Tracer devices, so it was replaced by two working autonomous access points.
+
+The VLANs, trunks, HSRP gateways, routing, NAT, DHCP, DNS, and web services were then rebuilt and verified.
+
+For final testing, every user device was tested against its local virtual gateway. All six clients received four out of four replies.
+
+Every client was then tested against the internal web server in VLAN 50. After normal ARP-table convergence, all clients received four out of four replies.
+
+Finally, every client was tested against the simulated Internet server at 198.51.100.10. All six clients successfully reached it through the edge router and NAT.
+
+DNS was tested from an administration PC by pinging www.university.local. The name resolved correctly and returned four out of four replies.
+
+The final automated health check reported a healthy topology, zero down links, and zero duplicate IP addresses. In total, all 25 final test cases passed.
+
+To demonstrate the project, I will first ping the Administration virtual gateway. Then I will show communication from Engineering to the internal web server. Next, I will test Internet access from a wireless dormitory client. Finally, I will ping www.university.local to demonstrate DNS resolution.
+
+In conclusion, this project provides departmental segmentation, centralized network services, redundant gateway addressing, dynamic routing, wireless access, and external connectivity. The repaired scenario is functional and ready for demonstration.
+
+Thank you for listening. I am ready to answer your questions.
